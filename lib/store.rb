@@ -10,9 +10,19 @@ class Store < ActiveRecord::Base
   validates :annual_revenue, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :carries_valid_stock
 
+  before_destroy :check_employee_count
+
   private
 
   def carries_valid_stock
     errors.add(:carries_valid_stock, "stores must carry 'mens_apparel' or 'womens_apparel' (boolean: T)") unless mens_apparel || womens_apparel
+  end
+
+  def check_employee_count
+    employee_count = Store.find_by(id: self.id).employees.length
+    if employee_count > 0
+      errors.add("stores with employees cannot be destroyed")
+      throw :abort
+    end
   end
 end
