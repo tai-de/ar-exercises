@@ -27,3 +27,7 @@ Store.create(name: "Yaletown", annual_revenue: 430000, mens_apparel: true, women
 @mens_stores.each do |store|
   puts store.name + ' - ' + store.annual_revenue.to_s
 end
+
+@womens_stores = Store.where(womens_apparel: true, annual_revenue: ...1000000)
+
+pp @womens_stores
